@@ -1,4 +1,4 @@
-#Started on 20/02/26, Finished : . Made it so there are holes in different levels and they teleport you to the next level.
+#Started on 21/02/26, Finished : 23/02/26 . Made it so...
 
 import pygame
 
@@ -52,7 +52,6 @@ levels = [level_1_walls, level_2_walls]
 current_level = 0
 walls = levels[current_level]
 
-# COLORS
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
@@ -72,7 +71,7 @@ while running:
     keys = pygame.key.get_pressed()
 
     # LEFT
-    if keys[pygame.K_LEFT]:
+    if keys[pygame.K_a]:
         test_player = player.copy()
         test_player.x -= vel
 
@@ -80,7 +79,7 @@ while running:
             player.x -= vel
 
     # RIGHT
-    if keys[pygame.K_RIGHT]:
+    if keys[pygame.K_d]:
         test_player = player.copy()
         test_player.x += vel
 
@@ -88,7 +87,7 @@ while running:
             player.x += vel
 
     # UP
-    if keys[pygame.K_UP]:
+    if keys[pygame.K_w]:
         test_player = player.copy()
         test_player.y -= vel
 
@@ -96,7 +95,7 @@ while running:
             player.y -= vel
 
     # DOWN
-    if keys[pygame.K_DOWN]:
+    if keys[pygame.K_s]:
         test_player = player.copy()
         test_player.y += vel
 
@@ -104,26 +103,25 @@ while running:
             player.y += vel
     
     # LEVEL TRANSITIONS
-    # If player exits through top, bottom, left, or right
     if player.top <= 0:  # top exit
         current_level = (current_level + 1) % len(levels)
         walls = levels[current_level]
-        player.bottom = 600 - thickness  # appear at bottom of next level, X stays same
+        player.bottom = 600 - thickness  
 
     elif player.bottom >= 600:  # bottom exit
         current_level = (current_level + 1) % len(levels)
         walls = levels[current_level]
-        player.top = thickness  # appear at top of next level, X stays same
+        player.top = thickness  
 
     elif player.left <= 0:  # left exit
         current_level = (current_level + 1) % len(levels)
         walls = levels[current_level]
-        player.right = 950 - thickness  # appear at right of next level, Y stays same
+        player.right = 950 - thickness  
 
     elif player.right >= 950:  # right exit
         current_level = (current_level + 1) % len(levels)
         walls = levels[current_level]
-        player.left = thickness  # appear at left of next level, Y stays same
+        player.left = thickness  
 
     screen.fill((BLACK))
 
