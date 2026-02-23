@@ -10,8 +10,8 @@ background_colour = pygame.color.Color("#624343")
 pygame.display.set_caption("Adventure 2600") 
 
 
-width_character = 25
-height_character = 25
+width_character = 35
+height_character = 35
 
 rect_1_width = 100
 rect_1_height = 50
@@ -52,6 +52,7 @@ levels = [level_1_walls, level_2_walls]
 current_level = 0
 walls = levels[current_level]
 
+# COLORS
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
