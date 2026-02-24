@@ -1,4 +1,4 @@
-#Started on 21/02/26, Finished : 23/02/26 . Made it so...
+#Started on 25/02/26, Finished : 25/02/26 . Made it so the second level of the game has a drawbridge that in future will be coded with buttons that you can press to open.
 
 import pygame
 
@@ -23,28 +23,41 @@ player.center = screen.get_rect().center
 
 thickness = 50
 
+# DEFINE THESE FIRST
+internal_wall_y = 200
+hole_width = 250
+hole_left = (950 - hole_width) // 2
+hole_right = hole_left + hole_width
+
+drawbridge = pygame.Rect(hole_left, internal_wall_y, hole_width, thickness)
+
 # LEVEL 1
 level_1_walls = [
-
-    pygame.Rect(0, 0, 375, thickness),          # top left part
-    pygame.Rect(575, 0, 375, thickness),        # top right part
-
-    pygame.Rect(0, 600 - thickness, 950, thickness),    # bottom wall
-    pygame.Rect(0, 0, thickness, 600),                    # left wall
-    pygame.Rect(950 - thickness, 0, thickness, 600),     # right wall
-
+    pygame.Rect(0, 0, 375, thickness),
+    pygame.Rect(575, 0, 375, thickness),
+    pygame.Rect(0, 600 - thickness, 950, thickness),
+    pygame.Rect(0, 0, thickness, 600),
+    pygame.Rect(950 - thickness, 0, thickness, 600),
 ]
 
 # LEVEL 2
 level_2_walls = [
 
+    # INTERNAL WALL with wider hole
+    pygame.Rect(0, internal_wall_y, hole_left, thickness),
+    pygame.Rect(hole_right, internal_wall_y, 950 - hole_right, thickness),
+
+    pygame.Rect(hole_left, internal_wall_y, hole_width, thickness),
+
+    # LEFT WALL stops at internal wall
+    pygame.Rect(0, internal_wall_y, thickness, 600 - internal_wall_y),
+
+    # RIGHT WALL stops at internal wall
+    pygame.Rect(950 - thickness, internal_wall_y, thickness, 600 - internal_wall_y),
+
+    # BOTTOM WALL
     pygame.Rect(0, 600 - thickness, 375, thickness),      # left of hole
     pygame.Rect(575, 600 - thickness, 375, thickness),    # right of hole
-    
-    pygame.Rect(0, 0, 950, thickness),# TOP WALL
-    pygame.Rect(0, 0, thickness, 600),    # LEFT WALL
-    pygame.Rect(950 - thickness, 0, thickness, 600),# RIGHT WALL
-    pygame.Rect(200, 200, 550, thickness),# INTERNAL WALL
 ]
 
 levels = [level_1_walls, level_2_walls]
@@ -52,11 +65,13 @@ levels = [level_1_walls, level_2_walls]
 current_level = 0
 walls = levels[current_level]
 
+
 # COLORS
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 BLACK = (0, 0, 0)
+DARK_GREY = (60, 60, 60)
 
 pygame.mouse.set_visible(False)
 
@@ -124,11 +139,20 @@ while running:
         walls = levels[current_level]
         player.left = thickness  
 
-    screen.fill((BLACK))
+    # Background
+    if current_level == 1:
+        # water area
+        pygame.draw.rect(screen, (0, 120, 255), (0, 0, 950, internal_wall_y))
+        pygame.draw.rect(screen, (BLACK), (0, internal_wall_y, 950, 600 - internal_wall_y))
+    else:
+        screen.fill(BLACK)
 
     pygame.draw.rect(screen, (col), (player))
     for wall in walls:
         pygame.draw.rect(screen,(GREEN), (wall))
+    
+    if current_level == 1:
+        pygame.draw.rect(screen, DARK_GREY, drawbridge)
 
     pygame.display.flip()
 
